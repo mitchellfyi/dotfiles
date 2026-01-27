@@ -6,7 +6,19 @@ TARGET_DIR="${TARGET_DIR:-$HOME/Dropbox/work/dotfiles}"
 ZSH_FILES=(zshenv zprofile zshrc zlogin)
 
 expand_path() {
-  perl -MFile::Spec -e 'print File::Spec->rel2abs($ARGV[0])' "$1"
+  # Try perl first (most reliable), fall back to readlink or cd
+  if command -v perl >/dev/null 2>&1; then
+    perl -MFile::Spec -e 'print File::Spec->rel2abs($ARGV[0])' "$1"
+  elif command -v readlink >/dev/null 2>&1; then
+    readlink -f "$1" 2>/dev/null || echo "$1"
+  else
+    # Fallback: resolve relative paths manually
+    if [[ "$1" != /* ]]; then
+      echo "$(pwd)/$1"
+    else
+      echo "$1"
+    fi
+  fi
 }
 
 TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
@@ -15,22 +27,56 @@ DROPBOX_ROOT="$(dirname "$TARGET_DIR")"
 
 echo ">>> Ensuring dependencies..."
 if ! xcode-select -p >/dev/null 2>&1; then
+  echo "    Installing Xcode Command Line Tools..."
   xcode-select --install 2>/dev/null || true
+  echo "    Please complete the Xcode CLT installation, then re-run this script."
+  exit 1
 fi
-if ! command -v brew >/dev/null 2>&1; then
+
+# Detect Homebrew location (Apple Silicon or Intel)
+BREW_CMD=""
+if [[ -f "/opt/homebrew/bin/brew" ]]; then
+  BREW_CMD="/opt/homebrew/bin/brew"
+elif [[ -f "/usr/local/bin/brew" ]]; then
+  BREW_CMD="/usr/local/bin/brew"
+fi
+
+if [[ -z "$BREW_CMD" ]]; then
+  echo "    Installing Homebrew..."
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  # Re-detect after installation
+  if [[ -f "/opt/homebrew/bin/brew" ]]; then
+    BREW_CMD="/opt/homebrew/bin/brew"
+  elif [[ -f "/usr/local/bin/brew" ]]; then
+    BREW_CMD="/usr/local/bin/brew"
+  fi
 fi
-brew install --quiet zsh git
+
+if [[ -n "$BREW_CMD" ]]; then
+  echo "    Installing zsh and git..."
+  "$BREW_CMD" install --quiet zsh git || {
+    echo "    Failed to install dependencies. Please install manually:" >&2
+    echo "    $BREW_CMD install zsh git" >&2
+    exit 1
+  }
+else
+  echo "    Warning: Could not find Homebrew. Please install zsh and git manually." >&2
+fi
 
 echo ">>> Preparing Dropbox folder at $DROPBOX_ROOT"
 mkdir -p "$DROPBOX_ROOT"
 
-if [ -d "$TARGET_DIR/.git" ]; then
+if [[ -d "$TARGET_DIR/.git" ]]; then
   echo ">>> Updating existing dotfiles repo at $TARGET_DIR"
-  git -C "$TARGET_DIR" pull --rebase --autostash
+  if ! git -C "$TARGET_DIR" pull --rebase --autostash; then
+    echo "    Warning: Failed to update dotfiles. Continuing anyway..." >&2
+  fi
 else
   echo ">>> Cloning dotfiles repo into $TARGET_DIR"
-  git clone "$REPO_URL" "$TARGET_DIR"
+  if ! git clone "$REPO_URL" "$TARGET_DIR"; then
+    echo "    Error: Failed to clone dotfiles repository." >&2
+    exit 1
+  fi
 fi
 
 create_loader() {
@@ -63,11 +109,8 @@ else
   echo ">>> Default shell already zsh"
 fi
 
-echo ">>> Reloading ~/.zshrc"
-source "$HOME/.zshrc"
-
 cat <<MSG
-All done! Dotfiles are synced from $TARGET_DIR.
-Open a new terminal (any directory) and zsh will pick up the Dropbox-backed config.
-Commit/push changes from that folder to share them across machines.
+All done! Dotfiles are synced at $TARGET_DIR.
+- Open a new terminal (any directory) or run \`exec zsh -l\` to load the Dropbox-backed config.
+- Commit/push changes from that folder to keep other machines in sync.
 MSG
