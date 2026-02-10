@@ -81,6 +81,7 @@ Configuration lives in `~/Dropbox/work/dotfiles` so iCloud/Time Machine stay cle
 - `hg` – Search history (usage: `hg "search term"`)
 
 ### Configuration
+- `dotfiles` – Open dotfiles directory in Cursor
 - `zshrc` – Edit `.zshrc` in Cursor
 - `zshenv` – Edit `.zshenv` in Cursor
 - `zprofile` – Edit `.zprofile` in Cursor

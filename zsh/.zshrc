@@ -47,6 +47,7 @@ setup_postgres_path() {
 }
 
 # Custom bin directories (highest priority - user scripts)
+add_to_path "$HOME/.local/bin" prepend
 add_to_path "$HOME/bin" prepend
 
 # Homebrew OpenJDK (check both Intel and Apple Silicon locations)
@@ -238,6 +239,7 @@ alias c.='cursor .'
 
 # Claude shortcuts
 alias claudeauto='claude --chrome --dangerously-skip-permissions --model opus --permission-mode bypassPermissions'
+alias ca=claudeauto
 
 # Python virtual environments
 alias venv='python3 -m venv .venv'
@@ -282,6 +284,7 @@ alias h='history'
 alias hg='history | grep'
 
 # Quick edit zsh config files
+alias dotfiles='cursor ~/Dropbox/work/dotfiles'
 alias zshrc='cursor ~/.zshrc'
 alias zshenv='cursor ~/.zshenv'
 alias zprofile='cursor ~/.zprofile'
