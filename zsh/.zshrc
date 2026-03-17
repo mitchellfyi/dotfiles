@@ -238,7 +238,7 @@ alias c='cursor .'  # Open current directory in Cursor
 alias c.='cursor .'
 
 # Claude shortcuts
-alias claudeauto='claude --chrome --dangerously-skip-permissions --model opus --permission-mode bypassPermissions'
+alias claudeauto='claude --chrome --dangerously-skip-permissions --model opus --permission-mode bypassPermissions --effort max'
 alias ca=claudeauto
 
 # Python virtual environments
