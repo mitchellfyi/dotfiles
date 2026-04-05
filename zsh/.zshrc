@@ -245,7 +245,7 @@ alias c.='cursor .'
 
 # Claude shortcuts
 alias claudeauto='claude --chrome --dangerously-skip-permissions --model opus --permission-mode bypassPermissions --effort max'
-alias ca=claudeauto
+alias cla=claudeauto
 
 alias codexauto='codex --yolo --full-auto true --ask-for-approval never'
 alias coa=codexauto
