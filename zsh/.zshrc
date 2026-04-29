@@ -71,6 +71,12 @@ add_to_path "$PNPM_HOME"
 add_to_path "$HOME/.rvm/bin"
 
 # -----------------------------------------------------------------------------
+# Completion System
+# -----------------------------------------------------------------------------
+# Use -u to skip ownership check — multiple users share /opt/homebrew on this machine
+autoload -Uz compinit && compinit -u
+
+# -----------------------------------------------------------------------------
 # Language Version Managers
 # -----------------------------------------------------------------------------
 
@@ -240,7 +246,7 @@ alias c.='cursor .'
 # Claude shortcuts
 alias claudeauto='claude --chrome --dangerously-skip-permissions --model opus --permission-mode bypassPermissions --effort max'
 alias cla='claudeauto'
-alias codexauto='codex --dangerously-bypass-approvals-and-sandbox --ask-for-approval never'
+alias codexauto='codex --yolo --full-auto true --dangerously-bypass-approvals-and-sandbox --ask-for-approval never'
 alias coa='codexauto'
 
 # Python virtual environments
