@@ -246,7 +246,7 @@ alias c.='cursor .'
 # Claude shortcuts
 alias claudeauto='claude --chrome --dangerously-skip-permissions --model opus --permission-mode bypassPermissions --effort max'
 alias cla='claudeauto'
-alias codexauto='codex --yolo --full-auto true --dangerously-bypass-approvals-and-sandbox --ask-for-approval never'
+alias codexauto='codex --dangerously-bypass-approvals-and-sandbox --config model_reasoning_effort="xhigh"'
 alias coa='codexauto'
 
 # Python virtual environments
