@@ -1,0 +1,40 @@
+{
+  "mcpServers": {
+    "vercel": {
+      "type": "http",
+      "url": "https://mcp.vercel.com",
+      "tools": ["*"]
+    },
+    "linear": {
+      "type": "http",
+      "url": "https://mcp.linear.app/mcp",
+      "tools": ["*"]
+    },
+    "figma": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp",
+      "tools": ["*"]
+    },
+    "datadog": {
+      "type": "http",
+      "url": "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp",
+      "tools": ["*"]
+    },
+    "sentry": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp",
+      "tools": ["*"]
+    },
+    "digitalocean": {
+      "type": "http",
+      "url": "https://apps.mcp.digitalocean.com/mcp",
+      "tools": ["*"]
+    },
+    "hetzner": {
+      "type": "local",
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/dkruyt/mcp-hetzner.git", "mcp-hetzner"],
+      "tools": ["*"]
+    }
+  }
+}

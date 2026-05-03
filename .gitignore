@@ -10,3 +10,9 @@
 *.swp
 *.swo
 *~
+
+# Claude Code (per-project local settings)
+.claude/
+
+# Loader / install backups created by setup.sh
+*.backup-*

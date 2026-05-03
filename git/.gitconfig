@@ -1,0 +1,42 @@
+[user]
+	name = Mitchell Bryson
+	email = 198377+mitchellfyi@users.noreply.github.com
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	autoSetupRemote = true
+	default = current
+
+[fetch]
+	prune = true
+
+[rebase]
+	autoStash = true
+
+[diff]
+	algorithm = histogram
+	colorMoved = default
+
+[merge]
+	conflictstyle = zdiff3
+
+[core]
+	editor = cursor --wait
+	excludesfile = ~/.gitignore_global
+
+[rerere]
+	enabled = true
+
+[alias]
+	st = status -sb
+	co = checkout
+	br = branch
+	ci = commit
+	last = log -1 HEAD
+	unstage = reset HEAD --
+	graph = log --graph --oneline --decorate --all

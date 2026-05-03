@@ -1,0 +1,20 @@
+// Cursor keybindings overrides
+// Restore CMD+K → clear terminal when terminal is focused, and unbind Cursor's
+// AI-chat commands that otherwise hijack CMD+K inside the terminal.
+[
+  {
+    "key": "cmd+k",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "cmd+k",
+    "command": "-aichat.newfollowupaction",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "cmd+k",
+    "command": "-inlineChat.start",
+    "when": "terminalFocus"
+  }
+]
