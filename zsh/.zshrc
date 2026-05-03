@@ -244,8 +244,10 @@ alias c='cursor .'  # Open current directory in Cursor
 alias c.='cursor .'
 
 # Claude shortcuts
-alias claudeauto='claude --chrome --dangerously-skip-permissions --model opus --permission-mode bypassPermissions'
-alias ca=claudeauto
+alias claudeauto='claude --chrome --dangerously-skip-permissions --model opus --permission-mode bypassPermissions --effort max'
+alias cla='claudeauto'
+alias codexauto='codex --dangerously-bypass-approvals-and-sandbox --config model_reasoning_effort="xhigh"'
+alias coa='codexauto'
 
 # Python virtual environments
 alias venv='python3 -m venv .venv'
@@ -394,3 +396,5 @@ unset DOTFILES_DIR  # Clean up variable
 
 # Source local environment configuration (if it exists)
 [ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+
+alias dockerprune="docker system prune -a --volumes"
