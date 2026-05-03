@@ -71,6 +71,12 @@ add_to_path "$PNPM_HOME"
 add_to_path "$HOME/.rvm/bin"
 
 # -----------------------------------------------------------------------------
+# Completion System
+# -----------------------------------------------------------------------------
+# Use -u to skip ownership check — multiple users share /opt/homebrew on this machine
+autoload -Uz compinit && compinit -u
+
+# -----------------------------------------------------------------------------
 # Language Version Managers
 # -----------------------------------------------------------------------------
 
