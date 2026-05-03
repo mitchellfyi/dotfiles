@@ -25,6 +25,11 @@
       "url": "https://mcp.sentry.dev/mcp",
       "tools": ["*"]
     },
+    "cloudflare-api": {
+      "type": "http",
+      "url": "https://mcp.cloudflare.com/mcp",
+      "tools": ["*"]
+    },
     "digitalocean": {
       "type": "http",
       "url": "https://apps.mcp.digitalocean.com/mcp",

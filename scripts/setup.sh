@@ -67,8 +67,8 @@ if [[ -z "$BREW_CMD" ]]; then
 fi
 
 if [[ -n "$BREW_CMD" ]]; then
-  echo "    Installing core packages (zsh, git, gh, gnupg)..."
-  "$BREW_CMD" install --quiet zsh git gh gnupg || {
+  echo "    Installing core packages (zsh, git, gh, gnupg, age)..."
+  "$BREW_CMD" install --quiet zsh git gh gnupg age || {
     echo "    Failed to install core dependencies." >&2
     exit 1
   }
@@ -240,7 +240,7 @@ else
   echo "    SSH key already exists at $SSH_KEY"
 fi
 
-echo ">>> Configuring MCP servers (Vercel, Linear, Figma, Datadog, GitHub, Sentry, DigitalOcean, Hetzner)"
+echo ">>> Configuring MCP servers (Vercel, Linear, Figma, Datadog, GitHub, Sentry, Cloudflare API, DigitalOcean, Hetzner)"
 # OAuth-based servers prompt for auth on first connection.
 # GitHub & DigitalOcean MCPs may require a PAT — re-add with --header / env if so.
 # Hetzner is third-party; it inherits HCLOUD_TOKEN from the shell environment.
@@ -293,6 +293,9 @@ url = "https://api.githubcopilot.com/mcp"
 [mcp_servers.sentry]
 url = "https://mcp.sentry.dev/mcp"
 
+[mcp_servers.cloudflare-api]
+url = "https://mcp.cloudflare.com/mcp"
+
 [mcp_servers.digitalocean]
 url = "https://apps.mcp.digitalocean.com/mcp"
 
@@ -311,6 +314,7 @@ if command -v claude >/dev/null 2>&1; then
   add_mcp_claude datadog      http https://mcp.datadoghq.com/api/unstable/mcp-server/mcp
   add_mcp_claude github       http https://api.githubcopilot.com/mcp
   add_mcp_claude sentry       http https://mcp.sentry.dev/mcp
+  add_mcp_claude cloudflare-api http https://mcp.cloudflare.com/mcp
   add_mcp_claude digitalocean http https://apps.mcp.digitalocean.com/mcp
   add_mcp_claude_stdio hetzner uvx --from git+https://github.com/dkruyt/mcp-hetzner.git mcp-hetzner
 fi

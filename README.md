@@ -139,7 +139,7 @@ Background services (via Homebrew formula + `brew services`):
 
 Dev CLIs installed by Homebrew:
 
-`ripgrep`, `fd`, `jq`, `bat`, `eza`, `fzf`, `tldr`, `tree`, `htop`, `wget`, `httpie`.
+`ripgrep`, `fd`, `jq`, `bat`, `eza`, `fzf`, `tldr`, `tree`, `htop`, `wget`, `httpie`, `age`.
 
 Shell QoL plugins:
 
@@ -159,6 +159,7 @@ The bootstrap registers a common set of [Model Context Protocol](https://modelco
 | Datadog | `https://mcp.datadoghq.com/api/unstable/mcp-server/mcp` | OAuth |
 | GitHub | `https://api.githubcopilot.com/mcp` | PAT (Copilot CLI ships this built-in) |
 | Sentry | `https://mcp.sentry.dev/mcp` | OAuth |
+| Cloudflare API | `https://mcp.cloudflare.com/mcp` | OAuth or bearer token |
 | DigitalOcean | `https://apps.mcp.digitalocean.com/mcp` | PAT |
 | Hetzner | stdio: `uvx --from git+https://github.com/dkruyt/mcp-hetzner.git mcp-hetzner` (third-party) | `HCLOUD_TOKEN` env var |
 
@@ -195,7 +196,7 @@ bash <(curl -fsSL "https://raw.githubusercontent.com/mitchellfyi/dotfiles/main/s
 What it does:
 
 1. Installs Xcode CLT and Homebrew if missing.
-2. Installs Homebrew core packages: `zsh`, `git`, `gh`, `gnupg`, `mise`, `libyaml`.
+2. Installs Homebrew core packages: `zsh`, `git`, `gh`, `gnupg`, `age`, `mise`, `libyaml`.
 3. Installs dev CLIs: `ripgrep`, `fd`, `jq`, `bat`, `eza`, `fzf`, `tldr`, `tree`, `htop`, `wget`, `httpie`, plus `zsh-autosuggestions` and `zsh-syntax-highlighting`.
 4. Installs database formulas: `redis`, `mysql`. Starts both as `brew services`.
 5. Installs casks: Cursor, Postgres.app, Docker Desktop. Symlinks Cursor's CLI into `~/.local/bin/cursor`. Runs fzf's shell-integration installer.
@@ -208,7 +209,7 @@ What it does:
 12. Sets `/bin/zsh` as the default login shell (if not already).
 13. Symlinks `cursor/keybindings.json`, `git/.gitconfig`, `git/.gitignore_global` into `$HOME` (any existing files are backed up first).
 14. If `~/.ssh/id_ed25519` doesn't exist, generates a new ed25519 SSH key (using the email from `.gitconfig`) and adds it to the macOS keychain. The public key is printed at the end so you can paste it into GitHub.
-15. Registers MCP servers in Claude Code and Codex CLI (Vercel, Linear, Figma, Datadog, GitHub, Sentry, DigitalOcean, Hetzner) and symlinks the GitHub Copilot CLI MCP config from `mcp/copilot-mcp-config.json`.
+15. Registers MCP servers in Claude Code and Codex CLI (Vercel, Linear, Figma, Datadog, GitHub, Sentry, Cloudflare API, DigitalOcean, Hetzner) and symlinks the GitHub Copilot CLI MCP config from `mcp/copilot-mcp-config.json`.
 16. Applies macOS preferences:
     - Disable natural mouse/trackpad scrolling
     - Show hidden files and file extensions in Finder
