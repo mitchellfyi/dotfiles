@@ -2,7 +2,9 @@
 set -euo pipefail
 
 REPO_URL="${REPO_URL:-git@github.com:mitchellfyi/dotfiles.git}"
-TARGET_DIR="${TARGET_DIR:-$HOME/Dropbox/work/dotfiles}"
+# Target dotfiles directory. Precedence: positional arg > TARGET_DIR env > default.
+DEFAULT_TARGET_DIR="$HOME/Dropbox/work/mitchellfyi/dotfiles"
+TARGET_DIR="${1:-${TARGET_DIR:-$DEFAULT_TARGET_DIR}}"
 ZSH_FILES=(zshenv zprofile zshrc zlogin)
 
 expand_path() {
@@ -23,7 +25,7 @@ expand_path() {
 
 TARGET_DIR="${TARGET_DIR/#\~/$HOME}"
 TARGET_DIR="$(expand_path "$TARGET_DIR")"
-DROPBOX_ROOT="$(dirname "$TARGET_DIR")"
+PARENT_DIR="$(dirname "$TARGET_DIR")"
 
 link_with_backup() {
   # link_with_backup <src> <dst> — symlink src→dst, backing up regular file at dst
@@ -166,8 +168,8 @@ else
   echo "    Warning: gh not on PATH; skipping gh-copilot" >&2
 fi
 
-echo ">>> Preparing Dropbox folder at $DROPBOX_ROOT"
-mkdir -p "$DROPBOX_ROOT"
+echo ">>> Preparing parent directory at $PARENT_DIR"
+mkdir -p "$PARENT_DIR"
 
 if [[ -d "$TARGET_DIR/.git" ]]; then
   echo ">>> Updating existing dotfiles repo at $TARGET_DIR"
@@ -370,12 +372,12 @@ cat <<MSG
 All done! Dotfiles are synced at $TARGET_DIR.
 
 Manual follow-ups:
-  - Open a new terminal (any directory) or run \`exec zsh -l\` to load the Dropbox-backed config.
+  - Open a new terminal (any directory) or run \`exec zsh -l\` to load the synced config.
   - Sign out and back in for the natural-scroll change to take effect.
   - Restart Cursor for the keybindings symlink to take effect.
   - Launch Docker Desktop once to accept terms and start the daemon.
   - Run \`mysql_secure_installation\` to set the MySQL root password.
   - Run \`gh auth login\` to authenticate gh-copilot.
   - If a new SSH key was generated above, add it to GitHub.
-  - Add HCLOUD_TOKEN=... to ~/Dropbox/work/dotfiles/.env if you plan to use the Hetzner MCP.
+  - Add HCLOUD_TOKEN=... to $TARGET_DIR/.env if you plan to use the Hetzner MCP.
 MSG

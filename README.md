@@ -1,6 +1,6 @@
 # Dotfiles
 
-Configuration lives in `~/Dropbox/work/dotfiles` so iCloud/Time Machine stay clean while Dropbox keeps it synced. `$HOME` only holds thin loaders that source the tracked files.
+Configuration lives at a configurable path (default `~/work/mitchellfyi/dotfiles`). `$HOME` only holds thin loaders that source the tracked files, so the target directory can be moved without rewriting any loader-host files.
 
 ## Structure
 
@@ -165,7 +165,7 @@ The bootstrap registers a common set of [Model Context Protocol](https://modelco
 
 OAuth servers prompt for sign-in on first connection — no setup needed at install time. PAT-required servers (GitHub, DigitalOcean) need a token added before they'll connect; re-add with `claude mcp add ... --header "Authorization: Bearer ..."` or edit `~/.codex/config.toml`.
 
-**Hetzner** uses the community-built `dkruyt/mcp-hetzner` server (no official Hetzner MCP exists). Put `HCLOUD_TOKEN=...` in `~/Dropbox/work/dotfiles/.env` (gitignored) — the `.zshrc` exports it on shell startup and the MCP subprocess inherits it from the AI CLI's environment.
+**Hetzner** uses the community-built `dkruyt/mcp-hetzner` server (no official Hetzner MCP exists). Put `HCLOUD_TOKEN=...` in the `.env` at the root of your dotfiles directory (gitignored) — the `.zshrc` exports it on shell startup and the MCP subprocess inherits it from the AI CLI's environment.
 
 Storage by tool:
 
@@ -204,8 +204,8 @@ What it does:
 7. Installs global npm CLIs: `@openai/codex`, `@github/copilot`, and `pnpm` (plus latest `npm`).
 8. Installs Claude Code via the official native installer.
 9. Installs the `gh-copilot` extension for GitHub Copilot CLI.
-10. Ensures `~/Dropbox/work/dotfiles` exists, cloning or updating `git@github.com:mitchellfyi/dotfiles.git`.
-11. Writes loader files (`~/.zshenv`, `~/.zprofile`, `~/.zshrc`, `~/.zlogin`) that point at the absolute Dropbox path so every new terminal (regardless of working directory) sources the right config.
+10. Ensures the target dotfiles directory exists (default `~/work/mitchellfyi/dotfiles`, or whatever you pass as the first argument / set via `TARGET_DIR`), cloning or updating `git@github.com:mitchellfyi/dotfiles.git`.
+11. Writes loader files (`~/.zshenv`, `~/.zprofile`, `~/.zshrc`, `~/.zlogin`) that point at the absolute target path so every new terminal (regardless of working directory) sources the right config.
 12. Sets `/bin/zsh` as the default login shell (if not already).
 13. Symlinks `cursor/keybindings.json`, `git/.gitconfig`, `git/.gitignore_global` into `$HOME` (any existing files are backed up first).
 14. If `~/.ssh/id_ed25519` doesn't exist, generates a new ed25519 SSH key (using the email from `.gitconfig`) and adds it to the macOS keychain. The public key is printed at the end so you can paste it into GitHub.
@@ -230,11 +230,15 @@ After the script finishes, manual follow-ups:
 - Run `gh auth login` to authenticate gh-copilot.
 - If a new SSH key was generated, add it to GitHub at <https://github.com/settings/ssh/new>.
 
-You can override the defaults by setting `REPO_URL` or `TARGET_DIR` before running the command, e.g.
+You can override where the dotfiles repo is cloned by passing a path as the first argument to the script, or by setting the `TARGET_DIR` env var. Precedence: positional arg > `TARGET_DIR` env > default (`~/work/mitchellfyi/dotfiles`). To override the repo URL, set `REPO_URL`.
 
 ```bash
-REPO_URL="https://github.com/mitchellfyi/dotfiles.git" TARGET_DIR="$HOME/Dropbox/work/dotfiles" \
+# Positional arg
+bash <(curl -fsSL "https://raw.githubusercontent.com/mitchellfyi/dotfiles/main/scripts/setup.sh?$(date +%s)") "$HOME/code/dotfiles"
+
+# Env vars
+REPO_URL="https://github.com/mitchellfyi/dotfiles.git" TARGET_DIR="$HOME/code/dotfiles" \
   bash <(curl -fsSL "https://raw.githubusercontent.com/mitchellfyi/dotfiles/main/scripts/setup.sh?$(date +%s)")
 ```
 
-After bootstrap, edit/commit files inside `~/Dropbox/work/dotfiles` (for example `~/Dropbox/work/dotfiles/zsh/.zshrc`). The loader files in `$HOME` simply source the synced versions and should rarely change.
+After bootstrap, edit/commit files inside your dotfiles directory (default `~/work/mitchellfyi/dotfiles`, e.g. `~/work/mitchellfyi/dotfiles/zsh/.zshrc`). The loader files in `$HOME` simply source the synced versions and should rarely change.

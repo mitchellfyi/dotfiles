@@ -170,7 +170,7 @@ alias h='history'
 alias hg='history | grep'
 
 # Quick edit zsh config files
-alias dotfiles='cursor ~/Dropbox/work/dotfiles'
+alias dotfiles='cursor /Users/mitchell/Dropbox/work/mitchellfyi/dotfiles'
 alias zshrc='cursor ~/.zshrc'
 alias zshenv='cursor ~/.zshenv'
 alias zprofile='cursor ~/.zprofile'
